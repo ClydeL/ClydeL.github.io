@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Clyde blog]]></subtitle>
   <link href="http://yoursite.com/atom.xml" rel="self"/>
   <link href="http://yoursite.com"/>
-  <updated>2013-06-28T03:38:35.627Z</updated>
+  <updated>2013-06-28T06:17:00.821Z</updated>
   <id>http://yoursite.com/</id>
   <author>
     <name><![CDATA[Clyde Lin]]></name>
@@ -13,8 +13,8 @@
   <generator uri="http://zespia.tw/hexo">Hexo</generator>
   <entry>
     <title type="html"><![CDATA[Mac 与 Linux 下计算代码行数]]></title>
-    <link href="http://yoursite.com/2013/06/28/maccodeline/"/>
-    <id>http://yoursite.com/2013/06/28/maccodeline/</id>
+    <link href="http://yoursite.com/2013/06/28/codeline/"/>
+    <id>http://yoursite.com/2013/06/28/codeline/</id>
     <published>2013-06-28T01:03:36.000Z</published>
     <updated>2013-06-28T02:30:22.000Z</updated>
     <content type="html"><![CDATA[<p>以前作为Windows死程的时候计算代码是用一个小工具来计算的。然而到了Mac上没有那货了，但其实我们的选择更多了。</p>
