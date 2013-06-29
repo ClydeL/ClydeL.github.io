@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Clyde blog]]></subtitle>
   <link href="http://yoursite.com/atom.xml" rel="self"/>
   <link href="http://yoursite.com"/>
-  <updated>2013-06-29T03:05:45.580Z</updated>
+  <updated>2013-06-29T03:22:53.600Z</updated>
   <id>http://yoursite.com/</id>
   <author>
     <name><![CDATA[Clyde Lin]]></name>
@@ -16,7 +16,7 @@
     <link href="http://yoursite.com/2013/06/29/seesmic_api/"/>
     <id>http://yoursite.com/2013/06/29/seesmic_api/</id>
     <published>2013-06-29T08:23:39.000Z</published>
-    <updated>2013-06-28T09:29:14.000Z</updated>
+    <updated>2013-06-29T03:22:46.000Z</updated>
     <content type="html"><![CDATA[<h1>介绍</h1>
 
 <p>  国内上twitter一直都很麻烦，手机上上推的客户端也很多，大家上twitter一般就是挂VPN要不就是 用API，上twitter的客户端也非常多，我用过的客户端中我最喜欢、用起来最顺心的只有两个，一个就是gtalk机器人（这算客户端吗？）还有就是seesmic。但我不记得从哪个版本开始seesmic已经不支持自定义API了。这样我很难过，因为已经习惯了，后来尝试进入seesmic数据库替换API来实现自定义API成功。</p>
@@ -98,7 +98,7 @@ sqlite&gt;
 
 <p>到此，全部完成，你可以在输入<code>select * from accounts;</code>来查看一下是否替换成功。
 最后<code>sqlite&gt; .quit</code>退出sqlite。</p>
-<p>这样就不用每次上推都要挂VPN了，一劳永益，以后升级也不用再次修改。</p>
+<p>这样就不用每次上推都要挂VPN了，一劳永逸，以后升级也不用再次修改。</p>
 ]]></content>
     <category scheme="http://yoursite.com/tags/Android/" term="Android"/>
   </entry>
