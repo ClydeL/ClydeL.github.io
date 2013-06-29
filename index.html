@@ -68,6 +68,207 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2013-06-29T08:23:39.000Z"><a href="/2013/06/29/seesmic_api/">6月 29 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/06/29/seesmic_api/">在Seesmic上使用自定义API</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h1>介绍</h1>
+
+<p>  国内上twitter一直都很麻烦，手机上上推的客户端也很多，大家上twitter一般就是挂VPN要不就是 用API，上twitter的客户端也非常多，我用过的客户端中我最喜欢、用起来最顺心的只有两个，一个就是gtalk机器人（这算客户端吗？）还有就是seesmic。但我不记得从哪个版本开始seesmic已经不支持自定义API了。这样我很难过，因为已经习惯了，后来尝试进入seesmic数据库替换API来实现自定义API成功。</p>
+<blockquote><p>注意：该方法需要手机root权限，还没有root的同学上网找一下root的方法。还有就是该方法需要挂VPN登录一次。</p>
+</blockquote>
+
+
+<h1>准备</h1>
+
+<p>  这个方法需要用到ADB，去下载一下ADB，如果不想下载的话直接在手机上下载个终端软件进行操作也是可以的，只不过可能会有点儿蛋x。
+  有了ADB就可以直接对手机进行操作了，对了这里win的同学还需要再安装一下驱动程序了。</p>
+<h1>操作</h1>
+
+<p>1.首先用<code>adb shell</code>进入手机。如果直接在手机终端上操作的同学忽略这一步。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+</pre></td><td class="code"><pre><span class="constant">Clyde</span>-<span class="constant">MacBook</span><span class="symbol">:~</span> clyde<span class="variable">$ </span>adb shell
+shell<span class="variable">@android</span><span class="symbol">:/</span> $
+</pre></td></tr></table></figure>
+
+<p>2.用root权限进入seesmic数据库目录。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+</pre></td><td class="code"><pre>shell<span class="variable">@android</span><span class="symbol">:/</span> <span class="variable">$ </span>su
+shell<span class="variable">@android</span><span class="symbol">:/</span> <span class="comment"># cd /data/data/com.seesmic/databases</span>
+</pre></td></tr></table></figure>
+
+<p>这个时候用<code>ls</code>就可以看到seesmic的数据库了</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="code"><pre><span class="title">shell</span>@android:/<span class="typedef"><span class="keyword">data</span>/<span class="keyword">data</span>/com.seesmic/databases # ls</span>
+<span class="title">google_analytics</span>.db
+<span class="title">google_analytics</span>.db-journal
+<span class="title">twitter</span>.db
+<span class="title">twitter</span>.db-journal
+<span class="title">webview</span>.db
+<span class="title">webview</span>.db-journal
+<span class="title">webviewCookiesChromium</span>.db
+<span class="title">webviewCookiesChromiumPrivate</span>.db
+</pre></td></tr></table></figure>
+
+<p>3.用<code>sqlite3</code>命令进入twitter.db进行操作。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre>shell<span class="variable">@android</span><span class="symbol">:/data/data/com</span>.seesmic/databases <span class="comment"># sqlite3 twitter.db</span>
+<span class="constant">SQLite</span> version <span class="number">3.7</span>.<span class="number">11</span> <span class="number">2012</span>-<span class="number">03</span>-<span class="number">20</span> <span class="number">11</span><span class="symbol">:</span><span class="number">35</span><span class="symbol">:</span><span class="number">50</span>
+<span class="constant">Enter</span> <span class="string">".help"</span> <span class="keyword">for</span> instructions
+<span class="constant">Enter</span> <span class="constant">SQL</span> statements terminated with a <span class="string">";"</span>
+sqlite&gt;
+</pre></td></tr></table></figure>
+
+<p>4.修改<code>sqlite</code>显示格式</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="comment">sqlite</span>&gt; <span class="string">.</span><span class="comment">mode</span> <span class="comment">line
+</pre></td></tr></table></figure>
+
+<p>5.查看<code>accounts</code>表</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>sqlite&gt; <span class="operator"><span class="keyword">select</span> * <span class="keyword">from</span> accounts;</span>
+</pre></td></tr></table></figure>
+
+<p>这样就可以看到表的内容了。如果你没有登录过就不会有这个了，所以需要挂VPN登录一次。</p>
+<p><img src="/img/seesmic_table_accounts.png" alt=""></p>
+<p>箭头所指的那行就是API，我们需要修改的就是这个</p>
+<p>6.修改API</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>sqlite&gt; <span class="operator"><span class="keyword">UPDATE</span> accounts <span class="keyword">SET</span> rest_api = <span class="string">'http://你的api地址/'</span> <span class="keyword">WHERE</span> name = <span class="string">'你的ID就是上面那张图name字段，我这里就是写clyde_lin'</span>;</span>
+</pre></td></tr></table></figure>
+
+<p>到此，全部完成，你可以在输入<code>select * from accounts;</code>来查看一下是否替换成功。
+最后<code>sqlite&gt; .quit</code>退出sqlite。</p>
+<p>这样就不用每次上推都要挂VPN了，一劳永益，以后升级也不用再次修改。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-06-29T02:55:35.000Z"><a href="/2013/06/29/12306_on_chrome/">6月 29 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/06/29/12306_on_chrome/">解决 Chrome 打不开 12306.cn</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>12306 我已经找不到用什么词汇来形容他了，之前我用chrome打开它无法购票，页面上的信息可以让我们知道是证书的问题。原本跳出错误页面后会有一个继续浏览的按钮，不知道什么时候开始不见了。我上twitter问了一下，有一名推油告诉我一个解决方案。特别有意思，分享一下。</p>
+<p>chrome打开12306，点击购票网页打不开。<code>commd+t</code>新建标签咯，win下是（<code>ctrl+t</code>）好像是这样的。然后打开网址</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="symbol">https:</span>/<span class="regexp">/dynamic.12306.cn/otsweb</span><span class="regexp">/
+</pre></td></tr></table></figure>
+
+<p>这个时候跳出证书的安全问题，这个时候也没有<code>继续浏览</code>的按钮了。直接键盘输入<code>proceed</code>。完成。。可以了。
+我第一次知道这个方法的时候觉得 。。。奇葩。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-06-28T13:37:24.000Z"><a href="/2013/06/28/subl_on_mac_trem/">6月 28 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/06/28/subl_on_mac_trem/">在终端(terminal)中使用sublime</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>最近在玩这个Hexo，朋友今天下午就问我能不能在终端里面直接用sublime打开要编辑的文章，hexo很多事情就在terminal中完成咯。一开始写文章的时候，都是用vim直接在终端中直接写。后来呢，发现有点儿麻烦就是很多文章中会设计到代码，而在终端里面的Vim里写代码又不是很好写so我就想用sublime来写文章啦。
+但每次都要去Finder里面找到hexo这个新增文章的 md 再用sublime打开有点儿麻烦，就想直接在终端中打开。</p>
+<p>那其实sublime自带了这样的命令。但没有在环境变量（win下是真么叫的 也就是Mac下的<code>$PATH</code>了）中。这样就很好办了，只要将其加到<code>$PATH</code>中就可以了。</p>
+<p>这个命令的路径在<code>/Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl</code>
+那现在有两种办法，办法一就是将这个命令直接加到<code>$PATH</code>里面。第二种就是用<code>ln</code>命令link一个到bin中</p>
+<p>直接在终端中输入</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>ln -s /Applications/Sublime<span class="command">\ </span>Text<span class="command">\ </span>2.app/Contents/SharedSupport/bin/subl /usr/bin/subl
+</pre></td></tr></table></figure>
+
+<p>就成功了。</p>
+<p>需要撰写文章的时候只需要</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+</pre></td><td class="code"><pre>hexo <span class="keyword">new</span> <span class="string">"_new"</span>
+subl source<span class="regexp">/_posts/</span>_<span class="keyword">new</span>.md
+</pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2013-06-28T01:03:36.000Z"><a href="/2013/06/28/codeline/">6月 28 2013</a></time>
       
       
@@ -193,9 +394,13 @@ chmod +x cloc-<span class="number">1.58</span><span class="variable">.pl</span>
   <h3 class="title">标签</h3>
   <ul class="entry">
   
+    <li><a href="/tags/Android/">Android</a><small>1</small></li>
+  
     <li><a href="/tags/Clyde/">Clyde</a><small>1</small></li>
   
-    <li><a href="/tags/Mac/">Mac</a><small>1</small></li>
+    <li><a href="/tags/Mac/">Mac</a><small>2</small></li>
+  
+    <li><a href="/tags/坑爹货/">坑爹货</a><small>1</small></li>
   
   </ul>
 </div>

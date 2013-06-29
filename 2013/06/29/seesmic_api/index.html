@@ -1,0 +1,253 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>在Seesmic上使用自定义API | Mua~ mua~</title>
+  <meta name="author" content="Clyde Lin">
+  
+  <meta name="description" content="介绍
+
+  国内上twitter一直都很麻烦，手机上上推的客户端也很多，大家上twitter一般就是挂VPN要不就是 用API，上twitter的客户端也非常多，我用过的客户端中我最喜欢、用起来最顺心的只有两个，一个就是gtalk机器人（这算客户端吗？）还有就是seesmic。但我不记得从哪个版本开">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="在Seesmic上使用自定义API"/>
+  <meta property="og:site_name" content="Mua~ mua~"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Mua~ mua~" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-42073285-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Mua~ mua~</a></h1>
+  <h2><a href="/">Clyde blog</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+
+    
+      <li><a href="/archives">Archives</a></li>
+
+    
+      <li><a href="/about">About</a></li>
+
+    
+      <li><a href="/atom.xml">RSS</a> </li>
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-06-29T08:23:39.000Z"><a href="/2013/06/29/seesmic_api/">6月 29 2013</a></time>
+      
+      
+  
+    <h1 class="title">在Seesmic上使用自定义API</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h1>介绍</h1>
+
+<p>  国内上twitter一直都很麻烦，手机上上推的客户端也很多，大家上twitter一般就是挂VPN要不就是 用API，上twitter的客户端也非常多，我用过的客户端中我最喜欢、用起来最顺心的只有两个，一个就是gtalk机器人（这算客户端吗？）还有就是seesmic。但我不记得从哪个版本开始seesmic已经不支持自定义API了。这样我很难过，因为已经习惯了，后来尝试进入seesmic数据库替换API来实现自定义API成功。</p>
+<blockquote><p>注意：该方法需要手机root权限，还没有root的同学上网找一下root的方法。还有就是该方法需要挂VPN登录一次。</p>
+</blockquote>
+
+
+<h1>准备</h1>
+
+<p>  这个方法需要用到ADB，去下载一下ADB，如果不想下载的话直接在手机上下载个终端软件进行操作也是可以的，只不过可能会有点儿蛋x。
+  有了ADB就可以直接对手机进行操作了，对了这里win的同学还需要再安装一下驱动程序了。</p>
+<h1>操作</h1>
+
+<p>1.首先用<code>adb shell</code>进入手机。如果直接在手机终端上操作的同学忽略这一步。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+</pre></td><td class="code"><pre><span class="constant">Clyde</span>-<span class="constant">MacBook</span><span class="symbol">:~</span> clyde<span class="variable">$ </span>adb shell
+shell<span class="variable">@android</span><span class="symbol">:/</span> $
+</pre></td></tr></table></figure>
+
+<p>2.用root权限进入seesmic数据库目录。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+</pre></td><td class="code"><pre>shell<span class="variable">@android</span><span class="symbol">:/</span> <span class="variable">$ </span>su
+shell<span class="variable">@android</span><span class="symbol">:/</span> <span class="comment"># cd /data/data/com.seesmic/databases</span>
+</pre></td></tr></table></figure>
+
+<p>这个时候用<code>ls</code>就可以看到seesmic的数据库了</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="code"><pre><span class="title">shell</span>@android:/<span class="typedef"><span class="keyword">data</span>/<span class="keyword">data</span>/com.seesmic/databases # ls</span>
+<span class="title">google_analytics</span>.db
+<span class="title">google_analytics</span>.db-journal
+<span class="title">twitter</span>.db
+<span class="title">twitter</span>.db-journal
+<span class="title">webview</span>.db
+<span class="title">webview</span>.db-journal
+<span class="title">webviewCookiesChromium</span>.db
+<span class="title">webviewCookiesChromiumPrivate</span>.db
+</pre></td></tr></table></figure>
+
+<p>3.用<code>sqlite3</code>命令进入twitter.db进行操作。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre>shell<span class="variable">@android</span><span class="symbol">:/data/data/com</span>.seesmic/databases <span class="comment"># sqlite3 twitter.db</span>
+<span class="constant">SQLite</span> version <span class="number">3.7</span>.<span class="number">11</span> <span class="number">2012</span>-<span class="number">03</span>-<span class="number">20</span> <span class="number">11</span><span class="symbol">:</span><span class="number">35</span><span class="symbol">:</span><span class="number">50</span>
+<span class="constant">Enter</span> <span class="string">".help"</span> <span class="keyword">for</span> instructions
+<span class="constant">Enter</span> <span class="constant">SQL</span> statements terminated with a <span class="string">";"</span>
+sqlite&gt;
+</pre></td></tr></table></figure>
+
+<p>4.修改<code>sqlite</code>显示格式</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="comment">sqlite</span>&gt; <span class="string">.</span><span class="comment">mode</span> <span class="comment">line
+</pre></td></tr></table></figure>
+
+<p>5.查看<code>accounts</code>表</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>sqlite&gt; <span class="operator"><span class="keyword">select</span> * <span class="keyword">from</span> accounts;</span>
+</pre></td></tr></table></figure>
+
+<p>这样就可以看到表的内容了。如果你没有登录过就不会有这个了，所以需要挂VPN登录一次。</p>
+<p><img src="/img/seesmic_table_accounts.png" alt=""></p>
+<p>箭头所指的那行就是API，我们需要修改的就是这个</p>
+<p>6.修改API</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>sqlite&gt; <span class="operator"><span class="keyword">UPDATE</span> accounts <span class="keyword">SET</span> rest_api = <span class="string">'http://你的api地址/'</span> <span class="keyword">WHERE</span> name = <span class="string">'你的ID就是上面那张图name字段，我这里就是写clyde_lin'</span>;</span>
+</pre></td></tr></table></figure>
+
+<p>到此，全部完成，你可以在输入<code>select * from accounts;</code>来查看一下是否替换成功。
+最后<code>sqlite&gt; .quit</code>退出sqlite。</p>
+<p>这样就不用每次上推都要挂VPN了，一劳永益，以后升级也不用再次修改。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+  
+  <div class="tags">
+    <a href="/tags/Android/">Android</a>
+  </div>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"clyde"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+</section>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:yoursite.com">
+  </form>
+</div>
+
+  
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Android/">Android</a><small>1</small></li>
+  
+    <li><a href="/tags/Clyde/">Clyde</a><small>1</small></li>
+  
+    <li><a href="/tags/Mac/">Mac</a><small>2</small></li>
+  
+    <li><a href="/tags/坑爹货/">坑爹货</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2013 Clyde Lin
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

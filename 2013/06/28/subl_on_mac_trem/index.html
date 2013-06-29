@@ -3,18 +3,15 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Mac 与 Linux 下计算代码行数 | Mua~ mua~</title>
+  <title>在终端(terminal)中使用sublime | Mua~ mua~</title>
   <meta name="author" content="Clyde Lin">
   
-  <meta name="description" content="以前作为Windows死程的时候计算代码是用一个小工具来计算的。然而到了Mac上没有那货了，但其实我们的选择更多了。
-最简单的一种就是用Mac自带的wc命令来计算，比如我要计算某个目录下所有.java文件的行数就用
-1
-wc -l `find -E $path -regex &quot;.*\.(java)&quot;">
+  <meta name="description" content="最近在玩这个Hexo，朋友今天下午就问我能不能在终端里面直接用sublime打开要编辑的文章，hexo很多事情就在terminal中完成咯。一开始写文章的时候，都是用vim直接在终端中直接写。后来呢，发现有点儿麻烦就是很多文章中会设计到代码，而在终端里面的Vim里写代码又不是很好写so我就想用sub">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="Mac 与 Linux 下计算代码行数"/>
+  <meta property="og:title" content="在终端(terminal)中使用sublime"/>
   <meta property="og:site_name" content="Mua~ mua~"/>
 
   
@@ -72,56 +69,34 @@ wc -l `find -E $path -regex &quot;.*\.(java)&quot;">
     <header>
       
         <div class="icon"></div>
-        <time datetime="2013-06-28T01:03:36.000Z"><a href="/2013/06/28/codeline/">6月 28 2013</a></time>
+        <time datetime="2013-06-28T13:37:24.000Z"><a href="/2013/06/28/subl_on_mac_trem/">6月 28 2013</a></time>
       
       
   
-    <h1 class="title">Mac 与 Linux 下计算代码行数</h1>
+    <h1 class="title">在终端(terminal)中使用sublime</h1>
   
 
     </header>
     <div class="entry">
       
-        <p>以前作为Windows死程的时候计算代码是用一个小工具来计算的。然而到了Mac上没有那货了，但其实我们的选择更多了。</p>
-<p>最简单的一种就是用Mac自带的wc命令来计算，比如我要计算某个目录下所有.java文件的行数就用</p>
+        <p>最近在玩这个Hexo，朋友今天下午就问我能不能在终端里面直接用sublime打开要编辑的文章，hexo很多事情就在terminal中完成咯。一开始写文章的时候，都是用vim直接在终端中直接写。后来呢，发现有点儿麻烦就是很多文章中会设计到代码，而在终端里面的Vim里写代码又不是很好写so我就想用sublime来写文章啦。
+但每次都要去Finder里面找到hexo这个新增文章的 md 再用sublime打开有点儿麻烦，就想直接在终端中打开。</p>
+<p>那其实sublime自带了这样的命令。但没有在环境变量（win下是真么叫的 也就是Mac下的<code>$PATH</code>了）中。这样就很好办了，只要将其加到<code>$PATH</code>中就可以了。</p>
+<p>这个命令的路径在<code>/Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl</code>
+那现在有两种办法，办法一就是将这个命令直接加到<code>$PATH</code>里面。第二种就是用<code>ln</code>命令link一个到bin中</p>
+<p>直接在终端中输入</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre>1
-</pre></td><td class="code"><pre><span class="comment">wc</span> <span class="literal">-</span><span class="comment">l</span> <span class="comment">`find</span> <span class="literal">-</span><span class="comment">E</span> <span class="comment">$path</span> <span class="literal">-</span><span class="comment">regex</span> <span class="comment">"</span>.<span class="comment">*\</span>.<span class="comment">(java)"`
+</pre></td><td class="code"><pre>ln -s /Applications/Sublime<span class="command">\ </span>Text<span class="command">\ </span>2.app/Contents/SharedSupport/bin/subl /usr/bin/subl
 </pre></td></tr></table></figure>
 
-<p>但这样会将空格和注释都计算进去，因此就不是那么准确。</p>
-<p>给大家介绍一个工具。<code>colc.pl</code>下载呢可以去<a href="http://sourceforge.net/projects/cloc/">这里</a>下载。</p>
-<p>当然也可以直接</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-8
-</pre></td><td class="code"><pre><span class="comment">//wget下载</span>
-wget http:<span class="comment">//nchc.dl.sourceforge.net/project/cloc/cloc/v1.58/cloc-1.58.pl</span>
-
-<span class="comment">//添加执行</span>
-chmod +x cloc-<span class="number">1.58</span><span class="variable">.pl</span>
-
-<span class="comment">//执行就直接</span>
-./cloc-<span class="number">1.58</span><span class="variable">.pl</span> $path
-</pre></td></tr></table></figure>
-
-<p>也可以直接按项目分开写成一个sh
-比如我的possMobileLine.sh 这里我为了方便就重命名为<code>cloc.pl</code>了</p>
+<p>就成功了。</p>
+<p>需要撰写文章的时候只需要</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre>1
 2
-</pre></td><td class="code"><pre><span class="comment">echo</span> <span class="comment">wait</span> <span class="comment">a</span> <span class="comment">moment</span>.<span class="string">.</span><span class="string">.</span>
-<span class="comment">cloc</span>.<span class="comment">pl</span> <span class="comment">/Users/clyde/Documents/workspace/poss</span>-<span class="comment">mobile
+</pre></td><td class="code"><pre>hexo <span class="keyword">new</span> <span class="string">"_new"</span>
+subl source<span class="regexp">/_posts/</span>_<span class="keyword">new</span>.md
 </pre></td></tr></table></figure>
 
-<p>将这个sh加入环境变量后直接敲就可以了。
-效果就是这样</p>
-<p><img src="/img/codeLine.png" alt=""></p>
-<p>是不是非常强大，code与comment分开计算，也可以很直观的看出代码与注释比例，之前忘记看了什么书上说的是代码与注释比例应该要<code>2/5</code>左右，我的数据明显没有达到这个数字，很明显我偷懒了。</p>
-<p>当然<code>cloc.pl</code>还有很多其他参数，这个就不一一介绍了，运行一下就可以看到了。大家自己研究吧。</p>
 
       
     </div>

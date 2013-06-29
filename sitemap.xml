@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://yoursite.com/2013/06/29/12306_on_chrome/</loc>
+    <lastmod>2013-06-29T03:05:35.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://yoursite.com/2013/06/28/subl_on_mac_trem/</loc>
+    <lastmod>2013-06-28T14:12:08.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://yoursite.com/2013/06/29/seesmic_api/</loc>
+    <lastmod>2013-06-28T09:29:14.000Z</lastmod>
+  </url>
+  <url>
     <loc>http://yoursite.com/about/index.html</loc>
     <lastmod>2013-06-28T07:44:23.000Z</lastmod>
   </url>
