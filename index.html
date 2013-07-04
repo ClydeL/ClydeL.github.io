@@ -68,6 +68,81 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2013-07-04T13:23:20.000Z"><a href="/2013/07/04/transmission_on_vps/">7月 4 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/07/04/transmission_on_vps/">在VPS上装Transmission挂PT（好邪恶）</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>我们通常喜欢在VPS上干坏事（要弃用的时候），比如占用带宽啊，占用资源啊。现在人怎么都这么邪恶，然而我有很喜欢干邪恶的事情同时叫别人一起来做，哈哈哈。用Transmission挂PT来刷流量。。hoho~</p>
+<p>正题，在VPS上装Transmission，跟在路由器上装Transmission差不了太多。这里我VPS是Ubuntu。<br /></p>
+<p>VPS上有很多种安装方式，一种就是直接下源码编译。源码下载在<code>http://www.transmissionbt.com/download/</code> 编译就不用说了一路 <code>./configure</code> <code>make</code> <code>make install</code>结束。但编译的话可能还需要很多编译的环境，可以运行</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>apt-<span class="keyword">get</span> install build-essential automake autoconf libtool pkg-config intltool libcurl4-openssl-dev libglib2<span class="number">.0</span>-dev libevent-dev libminiupnpc-dev libminiupnpc5 libappindicator-dev
+</pre></td></tr></table></figure>
+
+<p>还有一种简单一点儿，直接从源里安装。</p>
+<p><h1>1.添加源并安装</h1></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+</pre></td><td class="code"><pre><span class="title">apt</span>-get install python-software-properties
+<span class="title">add</span>-apt-repository ppa:transmissionbt/ppa
+<span class="title">apt</span>-get update
+<span class="title">apt</span>-get install transmission-daemon
+</pre></td></tr></table></figure>
+
+<p><h1>2.停止服务编辑配置文件</h1></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre>/etc/init.d/transmission-daemon stop
+vi /etc/transmission-daemon/settings.json
+<span class="string">"rpc-whitelist"</span>: <span class="string">"127.0.0.1"</span> 改成  <span class="string">"rpc-whitelist"</span>: <span class="string">"<span class="variable">*.</span><span class="variable">*.</span><span class="variable">*.</span><span class="variable">*"</span>,
+"</span>rpc-password<span class="string">": "</span>你的密码<span class="string">",
+"</span>rpc-username<span class="string">": "</span>你的用户名<span class="string">",
+</pre></td></tr></table></figure>
+
+<p><h1>3.启动服务</h1></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>/etc/init.d/transmission-daemon <span class="operator"><span class="keyword">start</span>
+</pre></td></tr></table></figure>
+
+<p>现在你打开 <code>http://你的ip:9091/</code> 就可以看到管理界面了。<br />
+<img src="img/old_trans_webui.png" alt=""><br />
+这个不是很好看功能也不是很强，以后我们把它换掉。<br />
+这个时候添加种子有可能会出现错误 <code>Permission denied</code> 这个是下载路径没有权限。</p>
+<p>到你的下载路径也就是刚才那个配置文件的<code>download-dir</code>然后用<code>chmod</code>给它权限。搞定，效果就是这样的。
+<img src="img/oldwebuidone.png" alt=""><br /></p>
+<p>看来速度还不错哦。。。哈哈哈哈。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2013-06-29T08:23:39.000Z"><a href="/2013/06/29/seesmic_api/">6月 29 2013</a></time>
       
       
@@ -334,48 +409,11 @@ chmod +x cloc-<span class="number">1.58</span><span class="variable">.pl</span>
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2013-06-27T15:57:43.000Z"><a href="/2013/06/27/hello-world/">6月 27 2013</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2013/06/27/hello-world/">Hello World</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>Hello ~</p>
-<p>这个真的就是个很没有营养的hello world</p>
-<p>最近开始有点儿兴趣学点东西所以就找到了Node.js，然后呢就看到了这个台湾大学生的项目--Hexo</p>
-<p>以前都是玩wordpress jekyll Octopress ，对于新鲜的东西我向来比较好奇。</p>
-<p>首先Node.js就非常吸引我，第一我知道它在脚本语言上效率非常高，至于高到什么程度我还没有做过实验，就先不做评论了，但应该不可能超过java c 之类编译语言（这个不是废话吗）。</p>
-<p>其实呢我接触Node.js到现在我写这个文章的时候应该就只有不到10个小时吧，看了一些入门书和教程，由于之前学过PHP，接触过js所以感觉入门不是太难。</p>
-<p>至于Hexo，我特别喜欢这种很直接很简单且祖超的管理方式，堪称简单！粗暴！有效！真心太喜欢了。以后再用单独的文字来介绍它吧。</p>
-<p>以后这里就给我做学习记录了。以前的那些乱七八糟我还是不要迁移过来丢人现眼了。</p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
 
 <nav id="pagination">
   
+  
+    <a href="/page/2/" class="alignright next">下一页</a>
   
   <div class="clearfix"></div>
 </nav></div></div>
@@ -399,6 +437,8 @@ chmod +x cloc-<span class="number">1.58</span><span class="variable">.pl</span>
     <li><a href="/tags/Clyde/">Clyde</a><small>1</small></li>
   
     <li><a href="/tags/Mac/">Mac</a><small>2</small></li>
+  
+    <li><a href="/tags/Technology/">Technology</a><small>1</small></li>
   
     <li><a href="/tags/坑爹货/">坑爹货</a><small>1</small></li>
   

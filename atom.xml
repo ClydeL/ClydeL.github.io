@@ -4,13 +4,66 @@
   <subtitle><![CDATA[Clyde blog]]></subtitle>
   <link href="http://yoursite.com/atom.xml" rel="self"/>
   <link href="http://yoursite.com"/>
-  <updated>2013-06-29T03:22:53.600Z</updated>
+  <updated>2013-07-04T14:57:51.140Z</updated>
   <id>http://yoursite.com/</id>
   <author>
     <name><![CDATA[Clyde Lin]]></name>
     <email><![CDATA[i@mua.im]]></email>
   </author>
   <generator uri="http://zespia.tw/hexo">Hexo</generator>
+  <entry>
+    <title type="html"><![CDATA[在VPS上装Transmission挂PT（好邪恶）]]></title>
+    <link href="http://yoursite.com/2013/07/04/transmission_on_vps/"/>
+    <id>http://yoursite.com/2013/07/04/transmission_on_vps/</id>
+    <published>2013-07-04T13:23:20.000Z</published>
+    <updated>2013-07-04T14:54:48.000Z</updated>
+    <content type="html"><![CDATA[<p>我们通常喜欢在VPS上干坏事（要弃用的时候），比如占用带宽啊，占用资源啊。现在人怎么都这么邪恶，然而我有很喜欢干邪恶的事情同时叫别人一起来做，哈哈哈。用Transmission挂PT来刷流量。。hoho~</p>
+<p>正题，在VPS上装Transmission，跟在路由器上装Transmission差不了太多。这里我VPS是Ubuntu。<br /></p>
+<p>VPS上有很多种安装方式，一种就是直接下源码编译。源码下载在<code>http://www.transmissionbt.com/download/</code> 编译就不用说了一路 <code>./configure</code> <code>make</code> <code>make install</code>结束。但编译的话可能还需要很多编译的环境，可以运行</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>apt-<span class="keyword">get</span> install build-essential automake autoconf libtool pkg-config intltool libcurl4-openssl-dev libglib2<span class="number">.0</span>-dev libevent-dev libminiupnpc-dev libminiupnpc5 libappindicator-dev
+</pre></td></tr></table></figure>
+
+<p>还有一种简单一点儿，直接从源里安装。</p>
+<p><h1>1.添加源并安装</h1></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+</pre></td><td class="code"><pre><span class="title">apt</span>-get install python-software-properties
+<span class="title">add</span>-apt-repository ppa:transmissionbt/ppa
+<span class="title">apt</span>-get update
+<span class="title">apt</span>-get install transmission-daemon
+</pre></td></tr></table></figure>
+
+<p><h1>2.停止服务编辑配置文件</h1></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre>/etc/init.d/transmission-daemon stop
+vi /etc/transmission-daemon/settings.json
+<span class="string">"rpc-whitelist"</span>: <span class="string">"127.0.0.1"</span> 改成  <span class="string">"rpc-whitelist"</span>: <span class="string">"<span class="variable">*.</span><span class="variable">*.</span><span class="variable">*.</span><span class="variable">*"</span>,
+"</span>rpc-password<span class="string">": "</span>你的密码<span class="string">",
+"</span>rpc-username<span class="string">": "</span>你的用户名<span class="string">",
+</pre></td></tr></table></figure>
+
+<p><h1>3.启动服务</h1></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>/etc/init.d/transmission-daemon <span class="operator"><span class="keyword">start</span>
+</pre></td></tr></table></figure>
+
+<p>现在你打开 <code>http://你的ip:9091/</code> 就可以看到管理界面了。<br />
+<img src="img/old_trans_webui.png" alt=""><br />
+这个不是很好看功能也不是很强，以后我们把它换掉。<br />
+这个时候添加种子有可能会出现错误 <code>Permission denied</code> 这个是下载路径没有权限。</p>
+<p>到你的下载路径也就是刚才那个配置文件的<code>download-dir</code>然后用<code>chmod</code>给它权限。搞定，效果就是这样的。
+<img src="img/oldwebuidone.png" alt=""><br /></p>
+<p>看来速度还不错哦。。。哈哈哈哈。</p>
+]]></content>
+    <category scheme="http://yoursite.com/tags/Technology/" term="Technology"/>
+  </entry>
   <entry>
     <title type="html"><![CDATA[在Seesmic上使用自定义API]]></title>
     <link href="http://yoursite.com/2013/06/29/seesmic_api/"/>
@@ -124,7 +177,7 @@ sqlite&gt;
     <link href="http://yoursite.com/2013/06/28/subl_on_mac_trem/"/>
     <id>http://yoursite.com/2013/06/28/subl_on_mac_trem/</id>
     <published>2013-06-28T13:37:24.000Z</published>
-    <updated>2013-06-28T14:12:08.000Z</updated>
+    <updated>2013-06-29T03:32:04.000Z</updated>
     <content type="html"><![CDATA[<p>最近在玩这个Hexo，朋友今天下午就问我能不能在终端里面直接用sublime打开要编辑的文章，hexo很多事情就在terminal中完成咯。一开始写文章的时候，都是用vim直接在终端中直接写。后来呢，发现有点儿麻烦就是很多文章中会设计到代码，而在终端里面的Vim里写代码又不是很好写so我就想用sublime来写文章啦。
 但每次都要去Finder里面找到hexo这个新增文章的 md 再用sublime打开有点儿麻烦，就想直接在终端中打开。</p>
 <p>那其实sublime自带了这样的命令。但没有在环境变量（win下是真么叫的 也就是Mac下的<code>$PATH</code>了）中。这样就很好办了，只要将其加到<code>$PATH</code>中就可以了。</p>
