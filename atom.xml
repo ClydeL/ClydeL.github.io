@@ -4,66 +4,13 @@
   <subtitle><![CDATA[Clyde blog]]></subtitle>
   <link href="http://yoursite.com/atom.xml" rel="self"/>
   <link href="http://yoursite.com"/>
-  <updated>2013-07-04T14:57:51.140Z</updated>
+  <updated>2013-07-06T05:38:40.589Z</updated>
   <id>http://yoursite.com/</id>
   <author>
     <name><![CDATA[Clyde Lin]]></name>
     <email><![CDATA[i@mua.im]]></email>
   </author>
   <generator uri="http://zespia.tw/hexo">Hexo</generator>
-  <entry>
-    <title type="html"><![CDATA[在VPS上装Transmission挂PT（好邪恶）]]></title>
-    <link href="http://yoursite.com/2013/07/04/transmission_on_vps/"/>
-    <id>http://yoursite.com/2013/07/04/transmission_on_vps/</id>
-    <published>2013-07-04T13:23:20.000Z</published>
-    <updated>2013-07-04T14:54:48.000Z</updated>
-    <content type="html"><![CDATA[<p>我们通常喜欢在VPS上干坏事（要弃用的时候），比如占用带宽啊，占用资源啊。现在人怎么都这么邪恶，然而我有很喜欢干邪恶的事情同时叫别人一起来做，哈哈哈。用Transmission挂PT来刷流量。。hoho~</p>
-<p>正题，在VPS上装Transmission，跟在路由器上装Transmission差不了太多。这里我VPS是Ubuntu。<br /></p>
-<p>VPS上有很多种安装方式，一种就是直接下源码编译。源码下载在<code>http://www.transmissionbt.com/download/</code> 编译就不用说了一路 <code>./configure</code> <code>make</code> <code>make install</code>结束。但编译的话可能还需要很多编译的环境，可以运行</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre>1
-</pre></td><td class="code"><pre>apt-<span class="keyword">get</span> install build-essential automake autoconf libtool pkg-config intltool libcurl4-openssl-dev libglib2<span class="number">.0</span>-dev libevent-dev libminiupnpc-dev libminiupnpc5 libappindicator-dev
-</pre></td></tr></table></figure>
-
-<p>还有一种简单一点儿，直接从源里安装。</p>
-<p><h1>1.添加源并安装</h1></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-</pre></td><td class="code"><pre><span class="title">apt</span>-get install python-software-properties
-<span class="title">add</span>-apt-repository ppa:transmissionbt/ppa
-<span class="title">apt</span>-get update
-<span class="title">apt</span>-get install transmission-daemon
-</pre></td></tr></table></figure>
-
-<p><h1>2.停止服务编辑配置文件</h1></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-</pre></td><td class="code"><pre>/etc/init.d/transmission-daemon stop
-vi /etc/transmission-daemon/settings.json
-<span class="string">"rpc-whitelist"</span>: <span class="string">"127.0.0.1"</span> 改成  <span class="string">"rpc-whitelist"</span>: <span class="string">"<span class="variable">*.</span><span class="variable">*.</span><span class="variable">*.</span><span class="variable">*"</span>,
-"</span>rpc-password<span class="string">": "</span>你的密码<span class="string">",
-"</span>rpc-username<span class="string">": "</span>你的用户名<span class="string">",
-</pre></td></tr></table></figure>
-
-<p><h1>3.启动服务</h1></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre>1
-</pre></td><td class="code"><pre>/etc/init.d/transmission-daemon <span class="operator"><span class="keyword">start</span>
-</pre></td></tr></table></figure>
-
-<p>现在你打开 <code>http://你的ip:9091/</code> 就可以看到管理界面了。<br />
-<img src="img/old_trans_webui.png" alt=""><br />
-这个不是很好看功能也不是很强，以后我们把它换掉。<br />
-这个时候添加种子有可能会出现错误 <code>Permission denied</code> 这个是下载路径没有权限。</p>
-<p>到你的下载路径也就是刚才那个配置文件的<code>download-dir</code>然后用<code>chmod</code>给它权限。搞定，效果就是这样的。
-<img src="img/oldwebuidone.png" alt=""><br /></p>
-<p>看来速度还不错哦。。。哈哈哈哈。</p>
-]]></content>
-    <category scheme="http://yoursite.com/tags/Technology/" term="Technology"/>
-  </entry>
   <entry>
     <title type="html"><![CDATA[在Seesmic上使用自定义API]]></title>
     <link href="http://yoursite.com/2013/06/29/seesmic_api/"/>
@@ -249,11 +196,64 @@ chmod +x cloc-<span class="number">1.58</span><span class="variable">.pl</span>
     <category scheme="http://yoursite.com/tags/Mac/" term="Mac"/>
   </entry>
   <entry>
+    <title type="html"><![CDATA[在VPS上装Transmission挂PT（好邪恶）]]></title>
+    <link href="http://yoursite.com/2013/06/20/transmission_on_vps/"/>
+    <id>http://yoursite.com/2013/06/20/transmission_on_vps/</id>
+    <published>2013-06-20T13:23:20.000Z</published>
+    <updated>2013-07-06T05:37:47.000Z</updated>
+    <content type="html"><![CDATA[<p>我们通常喜欢在VPS上干坏事（要弃用的时候），比如占用带宽啊，占用资源啊。现在人怎么都这么邪恶，然而我有很喜欢干邪恶的事情同时叫别人一起来做，哈哈哈。用Transmission挂PT来刷流量。当然你要是真的只是要养PT合理的应用VPS做一个sendBox也是可以的。hoho~</p>
+<p>正题，在VPS上装Transmission，跟在路由器上装Transmission差不了太多。这里我VPS是Ubuntu。<br /></p>
+<p>VPS上有很多种安装方式，一种就是直接下源码编译。源码下载在<code>http://www.transmissionbt.com/download/</code> 编译就不用说了一路 <code>./configure</code> <code>make</code> <code>make install</code>结束。但编译的话可能还需要很多编译的环境，可以运行</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>apt-<span class="keyword">get</span> install build-essential automake autoconf libtool pkg-config intltool libcurl4-openssl-dev libglib2<span class="number">.0</span>-dev libevent-dev libminiupnpc-dev libminiupnpc5 libappindicator-dev
+</pre></td></tr></table></figure>
+
+<p>还有一种简单一点儿，直接从源里安装。</p>
+<p><h1>1.添加源并安装</h1></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+</pre></td><td class="code"><pre><span class="title">apt</span>-get install python-software-properties
+<span class="title">add</span>-apt-repository ppa:transmissionbt/ppa
+<span class="title">apt</span>-get update
+<span class="title">apt</span>-get install transmission-daemon
+</pre></td></tr></table></figure>
+
+<p><h1>2.停止服务编辑配置文件</h1></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre>/etc/init.d/transmission-daemon stop
+vi /etc/transmission-daemon/settings.json
+<span class="string">"rpc-whitelist"</span>: <span class="string">"127.0.0.1"</span> 改成  <span class="string">"rpc-whitelist"</span>: <span class="string">"<span class="variable">*.</span><span class="variable">*.</span><span class="variable">*.</span><span class="variable">*"</span>,
+"</span>rpc-password<span class="string">": "</span>你的密码<span class="string">",
+"</span>rpc-username<span class="string">": "</span>你的用户名<span class="string">",
+</pre></td></tr></table></figure>
+
+<p><h1>3.启动服务</h1></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>/etc/init.d/transmission-daemon <span class="operator"><span class="keyword">start</span>
+</pre></td></tr></table></figure>
+
+<p>现在你打开 <code>http://你的ip:9091/</code> 就可以看到管理界面了。<br />
+<img src="img/old_trans_webui.png" alt=""><br />
+这个不是很好看功能也不是很强，以后我们把它换掉。<br />
+这个时候添加种子有可能会出现错误 <code>Permission denied</code> 这个是下载路径没有权限。</p>
+<p>到你的下载路径也就是刚才那个配置文件的<code>download-dir</code>然后用<code>chmod</code>给它权限。搞定，效果就是这样的。
+<img src="img/oldwebuidone.png" alt=""><br /></p>
+<p>看来速度还不错哦。。。哈哈哈哈。</p>
+]]></content>
+    <category scheme="http://yoursite.com/tags/Technology/" term="Technology"/>
+  </entry>
+  <entry>
     <title type="html"><![CDATA[Hello World]]></title>
-    <link href="http://yoursite.com/2013/06/27/hello-world/"/>
-    <id>http://yoursite.com/2013/06/27/hello-world/</id>
-    <published>2013-06-27T15:57:43.000Z</published>
-    <updated>2013-06-28T07:38:45.000Z</updated>
+    <link href="http://yoursite.com/2013/06/19/hello-world/"/>
+    <id>http://yoursite.com/2013/06/19/hello-world/</id>
+    <published>2013-06-19T15:57:43.000Z</published>
+    <updated>2013-07-06T05:38:27.000Z</updated>
     <content type="html"><![CDATA[<p>Hello ~</p>
 <p>这个真的就是个很没有营养的hello world</p>
 <p>最近开始有点儿兴趣学点东西所以就找到了Node.js，然后呢就看到了这个台湾大学生的项目--Hexo</p>
